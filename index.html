@@ -1005,6 +1005,101 @@
         <a href="#" class="cta-button">Learn More About WSPN</a>
     </div>
 
+    <div class="section" style="background: linear-gradient(135deg, rgba(10,10,30,0.9), rgba(30,10,40,0.9)); padding: 5rem 2rem;">
+        <h2 class="section-title" style="margin-bottom: 1rem;">🤖 WSPN AI Assistant - Interactive Demo</h2>
+        <p style="text-align: center; color: #aaa; max-width: 800px; margin: 0 auto 3rem;">
+            Experience the Waste Intelligence AI system. Input your waste materials and let the AI generate optimal product recommendations with manufacturing instructions.
+        </p>
+
+        <div id="ai-interface" style="max-width: 1200px; margin: 0 auto; background: rgba(20,20,40,0.8); border: 2px solid rgba(255,107,74,0.3); border-radius: 20px; padding: 3rem; box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
+            
+            <!-- AI Status Bar -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid rgba(255,107,74,0.2);">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ff6b4a, #ffaa00); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">🧠</div>
+                    <div>
+                        <div style="font-size: 1.3rem; font-weight: bold; color: #ff6b4a;">WSPN Intelligence Core</div>
+                        <div style="font-size: 0.9rem; color: #aaa;">Material Processing AI v3.2</div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 10px; height: 10px; background: #00ff88; border-radius: 50%; animation: pulse 2s infinite;"></div>
+                        <span style="color: #00ff88; font-size: 0.9rem;">ONLINE</span>
+                    </div>
+                    <div style="color: #aaa; font-size: 0.9rem;">Mission Day: 342</div>
+                </div>
+            </div>
+
+            <!-- Input Section -->
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; color: #ffaa00; font-weight: bold; margin-bottom: 1rem; font-size: 1.1rem;">
+                    📦 Input Waste Materials
+                </label>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                    <div class="waste-option" data-material="plastic" style="background: rgba(255,107,74,0.1); border: 2px solid rgba(255,107,74,0.3); border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.3s;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">♻️</div>
+                        <div style="font-weight: bold; color: #ff6b4a;">Plastic Packaging</div>
+                        <div style="font-size: 0.8rem; color: #aaa;">2.5 kg available</div>
+                    </div>
+                    <div class="waste-option" data-material="metal" style="background: rgba(100,150,200,0.1); border: 2px solid rgba(100,150,200,0.3); border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.3s;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔩</div>
+                        <div style="font-weight: bold; color: #6496c8;">Aluminum Scraps</div>
+                        <div style="font-size: 0.8rem; color: #aaa;">1.8 kg available</div>
+                    </div>
+                    <div class="waste-option" data-material="fabric" style="background: rgba(150,100,200,0.1); border: 2px solid rgba(150,100,200,0.3); border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.3s;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">👕</div>
+                        <div style="font-weight: bold; color: #9664c8;">Worn Clothing</div>
+                        <div style="font-size: 0.8rem; color: #aaa;">3.2 kg available</div>
+                    </div>
+                    <div class="waste-option" data-material="foam" style="background: rgba(255,200,100,0.1); border: 2px solid rgba(255,200,100,0.3); border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.3s;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📦</div>
+                        <div style="font-weight: bold; color: #ffc864;">Foam Packaging</div>
+                        <div style="font-size: 0.8rem; color: #aaa;">1.2 kg available</div>
+                    </div>
+                    <div class="waste-option" data-material="mixed" style="background: rgba(200,100,150,0.1); border: 2px solid rgba(200,100,150,0.3); border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.3s;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🗑️</div>
+                        <div style="font-weight: bold; color: #c86496;">Mixed Waste</div>
+                        <div style="font-size: 0.8rem; color: #aaa;">4.5 kg available</div>
+                    </div>
+                    <div class="waste-option" data-material="eva" style="background: rgba(100,200,150,0.1); border: 2px solid rgba(100,200,150,0.3); border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.3s;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🧤</div>
+                        <div style="font-weight: bold; color: #64c896;">EVA Gloves (Damaged)</div>
+                        <div style="font-size: 0.8rem; color: #aaa;">0.8 kg available</div>
+                    </div>
+                </div>
+                <div id="selected-materials" style="min-height: 40px; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 1rem; color: #aaa; margin-bottom: 1rem;">
+                    Select materials above to process...
+                </div>
+                <button id="generate-btn" style="width: 100%; padding: 1.5rem; background: linear-gradient(135deg, #ff6b4a, #ffaa00); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                    🚀 Generate Product Recommendations
+                </button>
+            </div>
+
+            <!-- AI Processing Animation -->
+            <div id="ai-processing" style="display: none; text-align: center; padding: 3rem;">
+                <div style="width: 80px; height: 80px; border: 4px solid rgba(255,107,74,0.2); border-top-color: #ff6b4a; border-radius: 50%; margin: 0 auto 2rem; animation: spin 1s linear infinite;"></div>
+                <div style="font-size: 1.2rem; color: #ff6b4a; margin-bottom: 0.5rem;">AI Processing...</div>
+                <div id="processing-text" style="color: #aaa;"></div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="ai-results" style="display: none;">
+                <div style="background: rgba(0,255,136,0.1); border: 2px solid rgba(0,255,136,0.3); border-radius: 15px; padding: 1.5rem; margin-bottom: 2rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="font-size: 2rem;">✅</div>
+                        <div>
+                            <div style="font-size: 1.2rem; font-weight: bold; color: #00ff88;">Optimization Complete</div>
+                            <div style="font-size: 0.9rem; color: #aaa;">Best product match identified based on material availability and mission needs</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="product-card"></div>
+            </div>
+        </div>
+    </div>
+
     <div style="background: rgba(10,10,20,0.9); padding: 3rem 2rem; text-align: center; color: #888;">
         <p style="margin-bottom: 0.5rem;">WSPN - Waste Segregation & Preprocessing Network</p>
         <p style="font-size: 0.9rem;">Designed for 8-person, 3-year Mars mission at Jezero Crater</p>
@@ -1038,6 +1133,529 @@
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
+        // AI Interface Logic
+        const selectedMaterials = [];
+        const wasteOptions = document.querySelectorAll('.waste-option');
+        const selectedDisplay = document.getElementById('selected-materials');
+        const generateBtn = document.getElementById('generate-btn');
+        const aiProcessing = document.getElementById('ai-processing');
+        const aiResults = document.getElementById('ai-results');
+        const processingText = document.getElementById('processing-text');
+        const productCard = document.getElementById('product-card');
+
+        // Product database with detailed manufacturing info
+        const products = {
+            plastic: {
+                name: 'Multi-Purpose Storage Container Set',
+                icon: '📦',
+                mass: '2.2 kg',
+                quantity: '12 containers',
+                usefulness: 95,
+                description: 'Modular stackable containers with airtight seals for organizing supplies, storing samples, and compartmentalizing equipment.',
+                benefits: [
+                    'Reduces clutter in habitat workspace',
+                    'Protects sensitive equipment from dust',
+                    'Stackable design saves 40% storage space',
+                    'Transparent design for quick visual inventory'
+                ],
+                process: [
+                    { step: 1, title: 'Material Sorting', desc: 'Optical NIR sorting separates PE and PET streams (15 min)', time: '15 min' },
+                    { step: 2, title: 'Cleaning & Shredding', desc: 'Low-water wash cycle + granulation to 3mm particles', time: '25 min' },
+                    { step: 3, title: 'Extrusion', desc: 'Melt processing at 220°C, pellet formation with composition check', time: '45 min' },
+                    { step: 4, title: '3D Printing', desc: 'FDM printing with 0.2mm layers, includes snap-fit lid mechanism', time: '6 hours' },
+                    { step: 5, title: 'Finishing', desc: 'Ultrasonic welding of seals, surface smoothing, UV sterilization', time: '30 min' }
+                ],
+                usage: {
+                    title: 'How to Use Your Containers',
+                    steps: [
+                        '1. Sort contents by frequency of use - keep daily items in transparent containers',
+                        '2. Label each container with contents and date using habitat printer labels',
+                        '3. Stack vertically using interlocking base design (up to 8 containers high)',
+                        '4. For sample storage: use inner seal + outer lid for double protection',
+                        '5. Clean with alcohol wipes between uses, sterilize monthly in airlock'
+                    ]
+                },
+                specs: {
+                    dimensions: '15cm × 12cm × 8cm per unit',
+                    weight: '180g per container',
+                    sealType: 'Silicone gasket (recycled EVA)',
+                    tempRange: '-40°C to +80°C',
+                    pressure: 'Maintains seal up to 0.5 bar differential'
+                }
+            },
+            metal: {
+                name: 'Adjustable Shelving Rack System',
+                icon: '🗄️',
+                mass: '1.6 kg',
+                quantity: '1 rack (4 shelves)',
+                usefulness: 92,
+                description: 'Lightweight aluminum shelving unit with adjustable height settings for flexible storage configuration.',
+                benefits: [
+                    'Increases vertical storage by 300%',
+                    'Tool-free assembly with friction-lock system',
+                    'Supports up to 25kg per shelf',
+                    'Corrosion-resistant aluminum alloy'
+                ],
+                process: [
+                    { step: 1, title: 'Metal Separation', desc: 'Eddy-current sorting isolates aluminum (95% purity)', time: '10 min' },
+                    { step: 2, title: 'Straightening', desc: 'Cold-press flattening removes bends and deformations', time: '20 min' },
+                    { step: 3, title: 'Cutting & Drilling', desc: 'CNC milling creates shelf pieces and mounting holes', time: '1 hour' },
+                    { step: 4, title: 'Joining', desc: 'Friction-stir welding for corner joints, rivet press for brackets', time: '45 min' },
+                    { step: 5, title: 'Surface Treatment', desc: 'Deburring, anodization coating for scratch resistance', time: '30 min' }
+                ],
+                usage: {
+                    title: 'Assembly & Installation Guide',
+                    steps: [
+                        '1. Lay out 4 vertical posts and identify top/bottom via laser markings',
+                        '2. Insert shelf brackets at desired heights (click-lock mechanism)',
+                        '3. Slide shelf panels into brackets until audible click',
+                        '4. Mount to habitat wall using provided anchor points (optional)',
+                        '5. Load heavier items on bottom shelves, distribute weight evenly',
+                        '6. Adjust height as needs change - no tools required for reconfiguration'
+                    ]
+                },
+                specs: {
+                    dimensions: '60cm H × 45cm W × 30cm D',
+                    weight: '1.6 kg total',
+                    material: '6061 aluminum alloy',
+                    loadCapacity: '25 kg per shelf, 80 kg total',
+                    adjustment: '5cm height increments'
+                }
+            },
+            fabric: {
+                name: 'EVA Suit Repair Kit & Utility Straps',
+                icon: '🧰',
+                mass: '2.8 kg',
+                quantity: '1 comprehensive kit',
+                usefulness: 98,
+                description: 'Mission-critical repair supplies including reinforced patches, adjustable straps, and microfiber cleaning cloths.',
+                benefits: [
+                    'Extends EVA suit lifespan by 40%',
+                    'Prevents mission-ending equipment failures',
+                    'Multi-use straps for 50+ applications',
+                    'Reduces reliance on Earth resupply'
+                ],
+                process: [
+                    { step: 1, title: 'Fabric Sorting', desc: 'Separate synthetics (polyester/nylon) from cotton by density', time: '20 min' },
+                    { step: 2, title: 'Cleaning Cycle', desc: 'Closed-loop wash with minimal water, UV sterilization', time: '35 min' },
+                    { step: 3, title: 'Cutting & Shaping', desc: 'Laser cutting creates patch shapes, strap lengths per template', time: '40 min' },
+                    { step: 4, title: 'Reinforcement', desc: 'Ultrasonic edge sealing prevents fraying, add velcro/snaps', time: '50 min' },
+                    { step: 5, title: 'Quality Check', desc: 'Pressure testing on patches, tensile strength test on straps', time: '25 min' }
+                ],
+                usage: {
+                    title: 'Repair & Application Instructions',
+                    steps: [
+                        '1. FOR PATCHES: Clean damaged area with alcohol wipe, dry completely',
+                        '2. Select patch size 2cm larger than damage on all sides',
+                        '3. Apply thermal adhesive layer, position patch, heat with handheld sealer (60 sec)',
+                        '4. FOR STRAPS: Thread through equipment loops or create custom anchor points',
+                        '5. Adjust length using slide buckle, secure with safety latch',
+                        '6. FOR CLEANING: Use microfiber cloths for optics, displays, and sensitive surfaces',
+                        '7. Inspect all repairs before EVA, replace patches after 10 pressurization cycles'
+                    ]
+                },
+                specs: {
+                    patches: '18 sizes from 5cm to 25cm diameter',
+                    straps: '8 straps, adjustable 30cm to 200cm',
+                    material: 'Nomex, polyester, cotton blend',
+                    tempRating: 'Patches: -150°C to +120°C',
+                    cloths: '24 microfiber cleaning cloths included'
+                }
+            },
+            foam: {
+                name: 'Thermal Insulation Panel Set',
+                icon: '🧊',
+                mass: '1.1 kg',
+                quantity: '6 panels',
+                usefulness: 89,
+                description: 'Lightweight insulation panels for cold storage lockers, equipment protection, and habitat temperature regulation.',
+                benefits: [
+                    'Reduces cooling energy consumption by 35%',
+                    'Protects temperature-sensitive samples',
+                    'Easy installation with adhesive backing',
+                    'Cuts easily to custom sizes'
+                ],
+                process: [
+                    { step: 1, title: 'Foam Inspection', desc: 'Visual + density check to ensure material quality', time: '10 min' },
+                    { step: 2, title: 'Mechanical Cropping', desc: 'Hot-wire cutting to standard panel dimensions', time: '25 min' },
+                    { step: 3, title: 'Surface Bonding', desc: 'Apply reflective aluminum foil backing for radiant barrier', time: '30 min' },
+                    { step: 4, title: 'Edge Sealing', desc: 'Polymer coating on edges prevents particle shedding', time: '20 min' },
+                    { step: 5, title: 'Adhesive Application', desc: 'Peel-and-stick backing for easy installation', time: '15 min' }
+                ],
+                usage: {
+                    title: 'Installation & Maintenance',
+                    steps: [
+                        '1. Measure area requiring insulation, cut panels to fit using utility knife',
+                        '2. Clean installation surface with isopropyl alcohol, let dry',
+                        '3. Peel backing paper, press firmly for 30 seconds, smooth out bubbles',
+                        '4. For cold lockers: install with reflective side facing inward',
+                        '5. For equipment protection: wrap around sensitive components',
+                        '6. Replace panels if compression exceeds 25% or damage occurs',
+                        '7. Can be combined with regolith for enhanced radiation shielding'
+                    ]
+                },
+                specs: {
+                    dimensions: '30cm × 30cm × 2cm per panel',
+                    weight: '180g per panel',
+                    rValue: 'R-6.5 thermal resistance',
+                    density: '45 kg/m³ closed-cell foam',
+                    reflectivity: '95% radiant heat reflection'
+                }
+            },
+            mixed: {
+                name: 'Regolith-Composite Building Bricks',
+                icon: '🧱',
+                mass: '4.0 kg (8 bricks)',
+                quantity: '8 structural bricks',
+                usefulness: 87,
+                description: 'Hybrid construction material combining recycled polymers with Martian regolith for sturdy, radiation-resistant building blocks.',
+                benefits: [
+                    'Uses 70% local Martian materials',
+                    'Provides basic radiation shielding',
+                    'Interlocking design requires no mortar',
+                    'Can be remolded if unused'
+                ],
+                process: [
+                    { step: 1, title: 'Waste Sorting', desc: 'Separate plastics, metals, organics; shred plastics to 5mm', time: '30 min' },
+                    { step: 2, title: 'Regolith Collection', desc: 'Robots collect and sieve local regolith (2mm screening)', time: '45 min' },
+                    { step: 3, title: 'Mixing', desc: 'Combine shredded plastic (30%) + regolith (70%) in heated mixer', time: '35 min' },
+                    { step: 4, title: 'Compression Molding', desc: 'Press into brick molds at 180°C and 5 MPa pressure', time: '1 hour' },
+                    { step: 5, title: 'Cooling & Curing', desc: 'Controlled cooling prevents cracking, 24hr cure time', time: '24 hours' }
+                ],
+                usage: {
+                    title: 'Construction Applications',
+                    steps: [
+                        '1. FOR WALLS: Stack bricks in running bond pattern, interlock tabs engage',
+                        '2. FOR PARTITIONS: Create privacy screens or equipment dividers',
+                        '3. FOR RADIATION SHIELDING: Use as outer layer for sleep quarters (20cm thickness)',
+                        '4. FOR FURNITURE: Build custom shelving, workbenches, or storage units',
+                        '5. ANCHORING: Drill mounting holes with standard bits, accepts threaded inserts',
+                        '6. SEALING: Apply polymer coating between layers for airtight construction',
+                        '7. RECYCLING: Bricks can be reheated and remolded if structure is changed'
+                    ]
+                },
+                specs: {
+                    dimensions: '20cm × 10cm × 8cm per brick',
+                    weight: '500g per brick',
+                    composition: '70% regolith + 30% recycled polymer',
+                    strength: '8 MPa compressive strength',
+                    shielding: '12% radiation reduction per 10cm'
+                }
+            },
+            eva: {
+                name: 'Specialized EVA Patch & Seal Kit',
+                icon: '🧤',
+                mass: '0.7 kg',
+                quantity: 'Complete repair kit',
+                usefulness: 99,
+                description: 'High-performance patches and sealing materials specifically designed for spacesuit repairs and pressure garment maintenance.',
+                benefits: [
+                    'Critical for astronaut safety during EVAs',
+                    'Repairs tears, punctures, and joint wear',
+                    'Maintains suit pressure integrity',
+                    'Emergency repair capability'
+                ],
+                process: [
+                    { step: 1, title: 'Material Assessment', desc: 'Identify EVA fabric types (Nomex, Kevlar, vinyl)', time: '15 min' },
+                    { step: 2, title: 'Cutting & Shaping', desc: 'Precision laser cutting for complex patch geometries', time: '25 min' },
+                    { step: 3, title: 'Layer Bonding', desc: 'Multi-layer construction: inner seal + structural + outer abrasion', time: '40 min' },
+                    { step: 4, title: 'Adhesive Preparation', desc: 'Apply pressure-sensitive adhesive with thermal activation', time: '20 min' },
+                    { step: 5, title: 'Pressure Testing', desc: 'Each patch tested to 0.3 bar in vacuum chamber', time: '30 min' }
+                ],
+                usage: {
+                    title: 'Emergency Repair Protocol',
+                    steps: [
+                        '⚠️ CRITICAL SAFETY ITEM - Review before each EVA',
+                        '1. FOR SMALL PUNCTURES (<5mm): Clean area, apply small circular patch, heat-activate for 90 sec',
+                        '2. FOR TEARS (<20mm): Apply rectangular patch covering damage + 3cm margin',
+                        '3. FOR JOINT WEAR: Use flexible joint patches with accordion flex zones',
+                        '4. FOR GLOVE REPAIRS: Fingertip patches with textured grip surface',
+                        '5. EMERGENCY IN-FIELD: Temporary patches included for immediate EVA completion',
+                        '6. POST-EVA: Permanent repair within 24 hours, pressure test to 0.35 bar',
+                        '7. REPLACEMENT: Patches good for 15 pressurization cycles, then replace',
+                        '8. Keep kit in airlock at all times for rapid access'
+                    ]
+                },
+                specs: {
+                    patches: '12 assorted sizes + 6 emergency patches',
+                    materials: 'Nomex outer, vinyl inner, Kevlar reinforcement',
+                    adhesive: 'Pressure-sensitive thermal-cure',
+                    testPressure: '0.35 bar (5 psi) differential',
+                    tempRange: '-150°C to +120°C operational'
+                }
+            }
+        };
+
+        // Waste option selection
+        wasteOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const material = option.getAttribute('data-material');
+                const isSelected = selectedMaterials.includes(material);
+
+                if (isSelected) {
+                    selectedMaterials.splice(selectedMaterials.indexOf(material), 1);
+                    option.style.background = option.style.background.replace('0.3', '0.1');
+                    option.style.borderWidth = '2px';
+                    option.style.transform = 'scale(1)';
+                } else {
+                    selectedMaterials.push(material);
+                    option.style.background = option.style.background.replace('0.1', '0.3');
+                    option.style.borderWidth = '3px';
+                    option.style.transform = 'scale(1.05)';
+                }
+
+                updateSelectedDisplay();
+            });
+        });
+
+        function updateSelectedDisplay() {
+            if (selectedMaterials.length === 0) {
+                selectedDisplay.innerHTML = 'Select materials above to process...';
+                selectedDisplay.style.color = '#aaa';
+            } else {
+                const materialNames = {
+                    plastic: 'Plastic Packaging',
+                    metal: 'Aluminum Scraps',
+                    fabric: 'Worn Clothing',
+                    foam: 'Foam Packaging',
+                    mixed: 'Mixed Waste',
+                    eva: 'EVA Gloves'
+                };
+                selectedDisplay.innerHTML = `<strong style="color: #ff6b4a;">Selected:</strong> ${selectedMaterials.map(m => materialNames[m]).join(', ')}`;
+                selectedDisplay.style.color = '#fff';
+            }
+        }
+
+        // Generate button
+        generateBtn.addEventListener('click', () => {
+            if (selectedMaterials.length === 0) {
+                alert('Please select at least one waste material');
+                return;
+            }
+
+            // Hide input, show processing
+            generateBtn.parentElement.style.display = 'none';
+            aiProcessing.style.display = 'block';
+            aiResults.style.display = 'none';
+
+            const processingSteps = [
+                'Analyzing material composition...',
+                'Checking inventory database...',
+                'Evaluating mission priorities...',
+                'Calculating optimal recovery routes...',
+                'Matching with product templates...',
+                'Generating manufacturing instructions...'
+            ];
+
+            let step = 0;
+            const processingInterval = setInterval(() => {
+                if (step < processingSteps.length) {
+                    processingText.textContent = processingSteps[step];
+                    step++;
+                } else {
+                    clearInterval(processingInterval);
+                    showResults();
+                }
+            }, 800);
+        });
+
+        function showResults() {
+            // Select primary material
+            const primaryMaterial = selectedMaterials[0];
+            const product = products[primaryMaterial];
+
+            aiProcessing.style.display = 'none';
+            aiResults.style.display = 'block';
+
+            productCard.innerHTML = `
+                <div style="background: linear-gradient(135deg, rgba(30,30,60,0.9), rgba(50,30,70,0.9)); border: 2px solid rgba(255,107,74,0.5); border-radius: 20px; padding: 2.5rem; box-shadow: 0 10px 40px rgba(255,107,74,0.3);">
+                    
+                    <!-- Product Header -->
+                    <div style="display: flex; align-items: start; gap: 2rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 2px solid rgba(255,107,74,0.3);">
+                        <div style="font-size: 5rem; background: linear-gradient(135deg, rgba(255,107,74,0.2), rgba(255,170,0,0.2)); padding: 1.5rem; border-radius: 20px; border: 2px solid rgba(255,107,74,0.4);">
+                            ${product.icon}
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-size: 2rem; font-weight: bold; color: #ff6b4a; margin-bottom: 0.5rem;">${product.name}</div>
+                            <div style="font-size: 1.1rem; color: #aaa; line-height: 1.6; margin-bottom: 1rem;">${product.description}</div>
+                            <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                                <div>
+                                    <div style="font-size: 0.9rem; color: #888;">Input Mass</div>
+                                    <div style="font-size: 1.2rem; color: #ffaa00; font-weight: bold;">${product.mass}</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.9rem; color: #888;">Output Quantity</div>
+                                    <div style="font-size: 1.2rem; color: #ffaa00; font-weight: bold;">${product.quantity}</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.9rem; color: #888;">Mission Usefulness</div>
+                                    <div style="font-size: 1.2rem; color: #00ff88; font-weight: bold;">${product.usefulness}%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Benefits Section -->
+                    <div style="margin-bottom: 2rem;">
+                        <div style="font-size: 1.4rem; color: #ffaa00; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span>✨</span> Key Benefits
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                            ${product.benefits.map(benefit => `
+                                <div style="background: rgba(255,170,0,0.1); border-left: 3px solid #ffaa00; padding: 1rem; border-radius: 8px;">
+                                    <div style="color: #ccc; font-size: 0.95rem;">• ${benefit}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Manufacturing Process -->
+                    <div style="margin-bottom: 2rem;">
+                        <div style="font-size: 1.4rem; color: #ffaa00; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span>⚙️</span> Manufacturing Process
+                        </div>
+                        <div style="position: relative;">
+                            ${product.process.map((proc, idx) => `
+                                <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem; position: relative;">
+                                    ${idx < product.process.length - 1 ? `
+                                        <div style="position: absolute; left: 20px; top: 45px; width: 2px; height: calc(100% + 10px); background: linear-gradient(180deg, #ff6b4a, rgba(255,107,74,0.3));"></div>
+                                    ` : ''}
+                                    <div style="min-width: 40px; height: 40px; background: linear-gradient(135deg, #ff6b4a, #ffaa00); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.1rem; z-index: 1;">${proc.step}</div>
+                                    <div style="flex: 1; background: rgba(255,255,255,0.05); padding: 1rem 1.5rem; border-radius: 10px; border-left: 3px solid #ff6b4a;">
+                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                                            <div style="font-size: 1.1rem; font-weight: bold; color: #ff6b4a;">${proc.title}</div>
+                                            <div style="background: rgba(255,170,0,0.2); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; color: #ffaa00; white-space: nowrap;">⏱️ ${proc.time}</div>
+                                        </div>
+                                        <div style="color: #bbb; font-size: 0.95rem;">${proc.desc}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="background: rgba(0,255,136,0.1); border: 2px solid rgba(0,255,136,0.3); border-radius: 10px; padding: 1rem; margin-top: 1.5rem;">
+                            <div style="font-weight: bold; color: #00ff88; margin-bottom: 0.3rem;">⏰ Total Production Time</div>
+                            <div style="color: #aaa;">Estimated: ${calculateTotalTime(product.process)}</div>
+                        </div>
+                    </div>
+
+                    <!-- Usage Instructions -->
+                    <div style="margin-bottom: 2rem;">
+                        <div style="font-size: 1.4rem; color: #ffaa00; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span>📖</span> ${product.usage.title}
+                        </div>
+                        <div style="background: rgba(100,150,255,0.1); border: 2px solid rgba(100,150,255,0.3); border-radius: 15px; padding: 1.5rem;">
+                            ${product.usage.steps.map(step => `
+                                <div style="padding: 0.8rem 0; color: #ddd; font-size: 1rem; line-height: 1.6; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    ${step}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Technical Specifications -->
+                    <div>
+                        <div style="font-size: 1.4rem; color: #ffaa00; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span>📋</span> Technical Specifications
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            ${Object.entries(product.specs).map(([key, value]) => `
+                                <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; border-left: 3px solid #64c8ff;">
+                                    <div style="font-size: 0.85rem; color: #888; text-transform: capitalize; margin-bottom: 0.3rem;">${key.replace(/([A-Z])/g, ' $1').trim()}</div>
+                                    <div style="color: #fff; font-size: 0.95rem; font-weight: 500;">${value}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+                        <button onclick="approveProduction()" style="flex: 1; min-width: 200px; padding: 1.2rem; background: linear-gradient(135deg, #00ff88, #00cc66); color: #000; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                            ✅ Approve Production
+                        </button>
+                        <button onclick="modifyRequest()" style="flex: 1; min-width: 200px; padding: 1.2rem; background: rgba(255,170,0,0.2); color: #ffaa00; border: 2px solid #ffaa00; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                            🔧 Modify Request
+                        </button>
+                        <button onclick="resetAI()" style="flex: 1; min-width: 200px; padding: 1.2rem; background: rgba(255,107,74,0.2); color: #ff6b4a; border: 2px solid #ff6b4a; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                            🔄 New Analysis
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Scroll to results
+            aiResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function calculateTotalTime(process) {
+            let totalMinutes = 0;
+            process.forEach(p => {
+                const timeStr = p.time.toLowerCase();
+                if (timeStr.includes('hour')) {
+                    const hours = parseFloat(timeStr);
+                    totalMinutes += hours * 60;
+                } else if (timeStr.includes('min')) {
+                    totalMinutes += parseFloat(timeStr);
+                }
+            });
+            
+            if (totalMinutes >= 1440) {
+                const days = Math.floor(totalMinutes / 1440);
+                const hours = Math.floor((totalMinutes % 1440) / 60);
+                return `${days}d ${hours}h`;
+            } else if (totalMinutes >= 60) {
+                const hours = Math.floor(totalMinutes / 60);
+                const mins = totalMinutes % 60;
+                return `${hours}h ${mins > 0 ? mins + 'm' : ''}`;
+            } else {
+                return `${totalMinutes}m`;
+            }
+        }
+
+        // Button functions
+        window.approveProduction = function() {
+            const notification = document.createElement('div');
+            notification.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #00ff88, #00cc66); color: #000; padding: 2rem 3rem; border-radius: 15px; font-size: 1.3rem; font-weight: bold; z-index: 10000; box-shadow: 0 20px 60px rgba(0,255,136,0.4);';
+            notification.innerHTML = '✅ Production Queue Updated!<br><span style="font-size: 0.9rem; font-weight: normal;">Manufacturing will begin in next available time slot</span>';
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        };
+
+        window.modifyRequest = function() {
+            alert('Modification interface would open here - allowing you to adjust quantities, priorities, or material selections.');
+        };
+
+        window.resetAI = function() {
+            // Reset everything
+            selectedMaterials.length = 0;
+            wasteOptions.forEach(option => {
+                option.style.background = option.style.background.replace('0.3', '0.1');
+                option.style.borderWidth = '2px';
+                option.style.transform = 'scale(1)';
+            });
+            updateSelectedDisplay();
+            generateBtn.parentElement.style.display = 'block';
+            aiResults.style.display = 'none';
+            
+            // Scroll to input
+            document.getElementById('ai-interface').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+            .waste-option:hover {
+                transform: scale(1.05) !important;
+                box-shadow: 0 5px 20px rgba(255,107,74,0.3);
+            }
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 30px rgba(255,107,74,0.4);
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
