@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WSPN - Waste Segregation & Preprocessing Network</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a0e2e 50%, #2d1b3d 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: radial-gradient(circle at 50% 50%, rgba(255,90,50,0.1), transparent 70%),
+                        url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="1" fill="white" opacity="0.3"/></svg>');
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(220,60,40,0.3), transparent);
+            border-radius: 50%;
+            animation: pulse 4s infinite;
+            top: 20%;
+            right: 10%;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff6b4a, #ffaa00, #ff6b4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #aaa;
+            margin-bottom: 2rem;
+        }
+
+        .mission-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 3rem auto;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.1);
+            border-color: #ff6b4a;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: #ff6b4a;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #ccc;
+            margin-top: 0.5rem;
+        }
+
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: #ff6b4a;
+        }
+
+        .process-flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .process-card {
+            background: linear-gradient(135deg, rgba(30,30,60,0.8), rgba(50,20,50,0.8));
+            border: 2px solid rgba(255,107,74,0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 350px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,107,74,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+        }
+
+        .process-card:hover::before {
+            left: 100%;
+        }
+
+        .process-card:hover {
+            transform: scale(1.05);
+            border-color: #ff6b4a;
+            box-shadow: 0 10px 40px rgba(255,107,74,0.3);
+        }
+
+        .process-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #ff6b4a;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .process-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffaa00;
+        }
+
+        .process-desc {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .component-card {
+            background: rgba(20,20,40,0.6);
+            border: 1px solid rgba(255,107,74,0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .component-card:hover {
+            background: rgba(30,30,50,0.8);
+            border-color: #ff6b4a;
+            transform: translateX(10px);
+        }
+
+        .component-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .component-title {
+            font-size: 1.3rem;
+            color: #ff6b4a;
+            margin-bottom: 0.5rem;
+        }
+
+        .component-function {
+            color: #ffaa00;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .component-details {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .materials-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(20,20,40,0.6);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .materials-table th {
+            background: linear-gradient(135deg, #ff6b4a, #ff8c5a);
+            padding: 1rem;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .materials-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .materials-table tr:hover {
+            background: rgba(255,107,74,0.1);
+        }
+
+        .recovery-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .recovery-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b4a, #ffaa00);
+            transition: width 1s;
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .benefit-card {
+            background: linear-gradient(135deg, rgba(255,107,74,0.1), rgba(255,170,0,0.1));
+            border: 2px solid rgba(255,107,74,0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            border-color: #ffaa00;
+            box-shadow: 0 15px 30px rgba(255,170,0,0.3);
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .benefit-title {
+            font-size: 1.2rem;
+            color: #ff6b4a;
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, rgba(255,107,74,0.1), rgba(255,170,0,0.1));
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(135deg, #ff6b4a, #ffaa00);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-top: 2rem;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(255,107,74,0.5);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .subtitle { font-size: 1.2rem; }
+            .process-card { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>WSPN</h1>
+        <div class="subtitle">Waste Segregation & Preprocessing Network</div>
+        <p style="max-width: 800px; line-height: 1.8; color: #bbb;">
+            A revolutionary closed-loop recycling system designed for Mars missions at Jezero Crater. 
+            Transforming 12,600 kg of waste into essential resources for survival.
+        </p>
+        
+        <div class="mission-stats">
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Astronauts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Years Mission</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12,600</div>
+                <div class="stat-label">kg Total Waste</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">~9,000</div>
+                <div class="stat-label">kg Recovered Material</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">🔄 How It Works: The Complete Process</h2>
+        
+        <div class="process-flow">
+            <div class="process-card">
+                <span class="process-number">1</span>
+                <div class="process-title">Collection Robots</div>
+                <div class="process-desc">
+                    Autonomous "Pollen" units patrol the habitat, identifying and collecting waste using cameras and NIR sensors. They perform initial shredding (5-20mm) and compression, then deliver materials to the airlock with dust-resistant actuators and swarm communication.
+                </div>
+            </div>
+
+            <div class="process-card">
+                <span class="process-number">2</span>
+                <div class="process-title">Airlock Intake</div>
+                <div class="process-desc">
+                    Sealed interface between external robots and pressurized micro-hub. Features mechanical seals, air recovery systems, particle traps, and chemical assay stations to prevent Martian dust ingress and isolate chemical hazards.
+                </div>
+            </div>
+
+            <div class="process-card">
+                <span class="process-number">3</span>
+                <div class="process-title">High-Fidelity Sorting</div>
+                <div class="process-desc">
+                    Advanced separation using eddy-current technology for metals, optical/NIR sensors for polymers (PE, PET, Nylon), and density/air separators for foams. Ensures 95%+ sorting accuracy for optimal recycling efficiency.
+                </div>
+            </div>
+
+            <div class="process-card">
+                <span class="process-number">4</span>
+                <div class="process-title">Preprocessing</div>
+                <div class="process-desc">
+                    Shredders, granulators, and dryers create controlled feedstock sizes. HEPA and charged filters capture microfibers. Materials are cleaned with minimal water in a closed-loop system integrated with habitat ECLSS.
+                </div>
+            </div>
+
+            <div class="process-card">
+                <span class="process-number">5</span>
+                <div class="process-title">Material Processing</div>
+                <div class="process-desc">
+                    Polymers extruded into pellets/filaments with inline composition verification. Metals undergo cold-press straightening and friction-stir joining. Optional low-oxygen thermal cell for pyrolysis of mixed plastics with full scrubbing.
+                </div>
+            </div>
+
+            <div class="process-card">
+                <span class="process-number">6</span>
+                <div class="process-title">Product Manufacturing</div>
+                <div class="process-desc">
+                    Additive manufacturing bay with FDM/pellet extruders produces on-demand utensils, storage bins, and small tools. Thermoforming and ultrasonic welding create panels. Regolith press makes composite bricks using waste polymers and Martian soil.
+                </div>
+            </div>
+
+            <div class="process-card">
+                <span class="process-number">7</span>
+                <div class="process-title">AI Management</div>
+                <div class="process-desc">
+                    Waste Intelligence system provides material traceability, optimizes fleet routing, generates predictive sorting rules, schedules maintenance, and performs product quality checks. Reduces crew workload by 80%.
+                </div>
+            </div>
+
+            <div class="process-card">
+                <span class="process-number">8</span>
+                <div class="process-title">Safe Storage</div>
+                <div class="process-desc">
+                    Hazard vault quarantines toxic materials, unknown substances, and electronics waste. Prevents PFAS and microplastic release. Stores materials for potential Earth return or future advanced processing capabilities.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" style="background: rgba(10,10,30,0.5);">
+        <h2 class="section-title">🛠️ System Components</h2>
+        
+        <div class="components-grid">
+            <div class="component-card">
+                <div class="component-icon">🤖</div>
+                <div class="component-title">Collection Robots</div>
+                <div class="component-function">Function: Autonomous waste collection & preprocessing</div>
+                <div class="component-details">
+                    <strong>How it works:</strong> Camera + NIR identification → mechanical collection → onboard shredding/compacting → swarm communication<br><br>
+                    <strong>Technical specs:</strong> Dust-hardened actuators, sealed hopper, cyclonic pre-filter, 5-20mm granulation, battery-powered
+                </div>
+            </div>
+
+            <div class="component-card">
+                <div class="component-icon">🚪</div>
+                <div class="component-title">Airlock Intake</div>
+                <div class="component-function">Function: Contamination prevention & quarantine</div>
+                <div class="component-details">
+                    <strong>How it works:</strong> Mechanical seal → air recovery → particle trap → chemical assay → pressurized transfer<br><br>
+                    <strong>Technical use:</strong> Prevents dust ingress, isolates chemical hazards, maintains habitat pressure integrity
+                </div>
+            </div>
+
+            <div class="component-card">
+                <div class="component-icon">🔍</div>
+                <div class="component-title">High-Fidelity Sorter</div>
+                <div class="component-function">Function: Material stream separation</div>
+                <div class="component-details">
+                    <strong>How it works:</strong> Eddy-current (metals) → optical/NIR sensors (polymers) → density/air separation (foams)<br><br>
+                    <strong>Technical use:</strong> 95%+ accuracy, separates PE/PET/Nylon/aluminum/steel streams
+                </div>
+            </div>
+
+            <div class="component-card">
+                <div class="component-icon">⚙️</div>
+                <div class="component-title">Shredder/Granulator</div>
+                <div class="component-function">Function: Size reduction & fiber capture</div>
+                <div class="component-details">
+                    <strong>How it works:</strong> Rotating blades → controlled granulation → HEPA/charged filters → drying<br><br>
+                    <strong>Technical use:</strong> Creates uniform feedstock, captures microfibers, prevents contamination
+                </div>
+            </div>
+
+            <div class="component-card">
+                <div class="component-icon">🧪</div>
+                <div class="component-title">Polymer Extruder</div>
+                <div class="component-function">Function: Feedstock production for AM</div>
+                <div class="component-details">
+                    <strong>How it works:</strong> Heating → melting → pelletizing/filament extrusion → inline composition verification<br><br>
+                    <strong>Technical use:</strong> Produces 3D printer filament and pellets for manufacturing
+                </div>
+            </div>
+
+            <div class="component-card">
+                <div class="component-icon">🔨</div>
+                <div class="component-title">Metal Rework Bay</div>
+                <div class="component-function">Function: Metal recycling & fabrication</div>
+                <div class="component-details">
+                    <strong>How it works:</strong> Cold-press straightening → friction-stir joining → rivet press → milling<br><br>
+                    <strong>Technical use:</strong> Creates shelves, frames, brackets, fasteners from recycled aluminum
+                </div>
+            </div>
+
+            <div class="component-card">
+                <div class="component-icon">🔥</div>
+                <div class="component-title">Low-Oxygen Thermal Cell</div>
+                <div class="component-function">Function: Controlled pyrolysis (optional)</div>
+                <div class="component-details">
+                    <strong>How it works:</strong> Sealed heating without oxygen → char production → gas scrubbing → byproduct capture<br><br>
+                    <strong>Technical use:</strong> Processes mixed plastics/EVA into filter carbon, fully scrubbed operation
+                </div>
+            </div>
+
+            <div class="component-card">
+                <div class="component-icon">🧱</div>
+                <div class="component-title">Regolith Binder Press</div>
+                <div class="component-function">Function: Composite material creation</div>
+                <div class="component-details">
+                    <strong>How it works:</strong> Mix shredded polymers/foam + regolith → low-temp compression → curing<br><br>
+                    <strong>Technical use:</strong> Creates insulation panels, structural bricks, no open burning
+                </div>
+            </div>
+
+            <div class="component-card">
+                <div class="component-icon">🖨️</div>
+                <div class="component-title">AM & Finishing Bench</div>
+                <div class="component-function">Function: On-demand manufacturing</div>
+                <div class="component-details">
+                    <strong>How it works:</strong> FDM/pellet extrusion → thermoforming → ultrasonic welding → finishing<br><br>
+                    <strong>Technical use:</strong> Produces utensils, storage bins, small tools, repair parts
+                </div>
+            </div>
+
+            <div class="component-card">
+                <div class="component-icon">🧠</div>
+                <div class="component-title">Waste Intelligence AI</div>
+                <div class="component-function">Function: System optimization & tracking</div>
+                <div class="component-details">
+                    <strong>How it works:</strong> Material traceability → fleet routing → predictive sorting → maintenance scheduling<br><br>
+                    <strong>Technical use:</strong> Reduces crew time, optimizes processing, ensures quality
+                </div>
+            </div>
+
+            <div class="component-card">
+                <div class="component-icon">⚠️</div>
+                <div class="component-title">Hazard Vault</div>
+                <div class="component-function">Function: Toxic material isolation</div>
+                <div class="component-details">
+                    <strong>How it works:</strong> Sealed containment → prevention of release → tracking for future processing<br><br>
+                    <strong>Technical use:</strong> Stores PFAS, electronics, unknown chemicals safely
+                </div>
+            </div>
+
+            <div class="component-card">
+                <div class="component-icon">👤</div>
+                <div class="component-title">Manual Override Station</div>
+                <div class="component-function">Function: Crew intervention point</div>
+                <div class="component-details">
+                    <strong>How it works:</strong> Manual control interface → textile repair bench → quality inspection<br><br>
+                    <strong>Technical use:</strong> Allows crew patching, sewing, and system override when needed
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">📊 Materials Recovery Breakdown</h2>
+        
+        <table class="materials-table">
+            <thead>
+                <tr>
+                    <th>Waste Category</th>
+                    <th>Input Mass (kg)</th>
+                    <th>Recovery Route</th>
+                    <th>Output Products</th>
+                    <th>Recovered Mass (kg)</th>
+                    <th>Recovery Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Clothing (cotton/polyester/nylon)</td>
+                    <td>2,015</td>
+                    <td>Mechanical sorting → separate streams</td>
+                    <td>Synthetic filament (709 kg) + Cotton rags (1,015 kg)</td>
+                    <td>1,724</td>
+                    <td>
+                        <div class="recovery-bar">
+                            <div class="recovery-fill" style="width: 86%;"></div>
+                        </div>
+                        86%
+                    </td>
+                </tr>
+                <tr>
+                    <td>Paper & Office</td>
+                    <td>82</td>
+                    <td>Direct reuse → repurpose</td>
+                    <td>Packing stock, labels, insulation</td>
+                    <td>65</td>
+                    <td>
+                        <div class="recovery-bar">
+                            <div class="recovery-fill" style="width: 79%;"></div>
+                        </div>
+                        79%
+                    </td>
+                </tr>
+                <tr>
+                    <td>Wipes / Tissues</td>
+                    <td>1,723</td>
+                    <td>Clean & repurpose</td>
+                    <td>Cleaning rags, filter pre-layers, insulation stuffing</td>
+                    <td>1,551</td>
+                    <td>
+                        <div class="recovery-bar">
+                            <div class="recovery-fill" style="width: 90%;"></div>
+                        </div>
+                        90%
+                    </td>
+                </tr>
+                <tr>
+                    <td>Towels / Hygiene</td>
+                    <td>1,234</td>
+                    <td>Textile repurpose</td>
+                    <td>Reusable towels, cleaning cloths, sewn goods</td>
+                    <td>1,111</td>
+                    <td>
+                        <div class="recovery-bar">
+                            <div class="recovery-fill" style="width: 90%;"></div>
+                        </div>
+                        90%
+                    </td>
+                </tr>
+                <tr>
+                    <td>Foam Packaging (Zotek/Plastazote)</td>
+                    <td>501</td>
+                    <td>Mechanical cropping + regolith mixing</td>
+                    <td>Insulation panels, lightweight brick filler</td>
+                    <td>451</td>
+                    <td>
+                        <div class="recovery-bar">
+                            <div class="recovery-fill" style="width: 90%;"></div>
+                        </div>
+                        90%
+                    </td>
+                </tr>
+                <tr>
+                    <td>Other Crew Supplies</td>
+                    <td>466</td>
+                    <td>Sort plastics/metals</td>
+                    <td>Small containers, trays, printed parts</td>
+                    <td>196</td>
+                    <td>
+                        <div class="recovery-bar">
+                            <div class="recovery-fill" style="width: 42%;"></div>
+                        </div>
+                        42%
+                    </td>
+                </tr>
+                <tr>
+                    <td>Food & Packaging (multi-layer)</td>
+                    <td>4,425</td>
+                    <td>Delaminate → separate streams</td>
+                    <td>Aluminum stock (1,261 kg) + Polymer feed (1,859 kg)</td>
+                    <td>3,120</td>
+                    <td>
+                        <div class="recovery-bar">
+                            <div class="recovery-fill" style="width: 71%;"></div>
+                        </div>
+                        71%
+                    </td>
+                </tr>
+                <tr>
+                    <td>EVA Supplies (CTBs, Nomex)</td>
+                    <td>128</td>
+                    <td>Textile patching & cutting</td>
+                    <td>Seals, patches, tether straps, abrasion covers</td>
+                    <td>100</td>
+                    <td>
+                        <div class="recovery-bar">
+                            <div class="recovery-fill" style="width: 85%;"></div>
+                        </div>
+                        85%
+                    </td>
+                </tr>
+                <tr>
+                    <td>Waste Management Hardware</td>
+                    <td>2,026</td>
+                    <td>Multi-stream recovery</td>
+                    <td>Metal stock (1,013 kg) + Plastic feed (608 kg)</td>
+                    <td>1,621</td>
+                    <td>
+                        <div class="recovery-bar">
+                            <div class="recovery-fill" style="width: 80%;"></div>
+                        </div>
+                        80%
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top: 3rem; padding: 2rem; background: rgba(255,107,74,0.1); border-radius: 15px; border-left: 5px solid #ff6b4a;">
+            <h3 style="color: #ff6b4a; margin-bottom: 1rem;">📦 Total Recovered Resources Summary</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+                <div>
+                    <div style="font-size: 2rem; color: #ffaa00; font-weight: bold;">3,472 kg</div>
+                    <div style="color: #ccc;">Polymer Feedstock (filament/pellets)</div>
+                </div>
+                <div>
+                    <div style="font-size: 2rem; color: #ffaa00; font-weight: bold;">2,274 kg</div>
+                    <div style="color: #ccc;">Aluminum & Metal Stock</div>
+                </div>
+                <div>
+                    <div style="font-size: 2rem; color: #ffaa00; font-weight: bold;">451 kg</div>
+                    <div style="color: #ccc;">Foam Insulation Material</div>
+                </div>
+                <div>
+                    <div style="font-size: 2rem; color: #ffaa00; font-weight: bold;">2,556 kg</div>
+                    <div style="color: #ccc;">Textile Reuse Materials</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" style="background: rgba(10,10,30,0.5);">
+        <h2 class="section-title">🎯 What Can Be Made</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div style="background: rgba(255,107,74,0.1); padding: 2rem; border-radius: 15px; border: 2px solid rgba(255,107,74,0.3);">
+                <div style="font-size: 1.5rem; color: #ff6b4a; margin-bottom: 1rem;">🏗️ Structural Components</div>
+                <ul style="color: #ccc; line-height: 2;">
+                    <li><strong>30-45</strong> insulation panels (foam composite)</li>
+                    <li><strong>~200</strong> medium shelving units (aluminum)</li>
+                    <li><strong>1,000+</strong> linear meters of rack framing</li>
+                    <li><strong>Dozens</strong> of regolith-polymer composite bricks</li>
+                </ul>
+            </div>
+
+            <div style="background: rgba(255,170,0,0.1); padding: 2rem; border-radius: 15px; border: 2px solid rgba(255,170,0,0.3);">
+                <div style="font-size: 1.5rem; color: #ffaa00; margin-bottom: 1rem;">🍴 Daily Use Items</div>
+                <ul style="color: #ccc; line-height: 2;">
+                    <li><strong>140,000+</strong> small utensils (3D printed)</li>
+                    <li><strong>Hundreds</strong> of storage containers & bins</li>
+                    <li><strong>Thousands</strong> of repair patches & straps</li>
+                    <li><strong>Custom tools</strong> for specific tasks</li>
+                </ul>
+            </div>
+
+            <div style="background: rgba(100,200,255,0.1); padding: 2rem; border-radius: 15px; border: 2px solid rgba(100,200,255,0.3);">
+                <div style="font-size: 1.5rem; color: #64c8ff; margin-bottom: 1rem;">🔧 Maintenance & Repair</div>
+                <ul style="color: #ccc; line-height: 2;">
+                    <li><strong>Metal brackets</strong> and fasteners</li>
+                    <li><strong>Textile repair kits</strong> (ongoing use)</li>
+                    <li><strong>EVA suit patches</strong> and seals</li>
+                    <li><strong>Filter replacements</strong> (activated carbon)</li>
+                </ul>
+            </div>
+
+            <div style="background: rgba(150,100,255,0.1); padding: 2rem; border-radius: 15px; border: 2px solid rgba(150,100,255,0.3);">
+                <div style="font-size: 1.5rem; color: #9664ff; margin-bottom: 1rem;">🧪 Lab & Science</div>
+                <ul style="color: #ccc; line-height: 2;">
+                    <li><strong>Water filtration media</strong> (activated carbon)</li>
+                    <li><strong>Electrode composites</strong> (carbon fillers)</li>
+                    <li><strong>Custom lab containers</strong> & sample holders</li>
+                    <li><strong>Protective covers</strong> & dust shields</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">✨ Key Benefits & Innovations</h2>
+        
+        <div class="benefits">
+            <div class="benefit-card">
+                <div class="benefit-icon">♻️</div>
+                <div class="benefit-title">Zero Waste Philosophy</div>
+                <div class="benefit-desc" style="color: #aaa; margin-top: 1rem;">Almost every item becomes something new. ~71% overall recovery rate transforms waste into valuable resources.</div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">💰</div>
+                <div class="benefit-title">Cost Savings</div>
+                <div class="benefit-desc" style="color: #aaa; margin-top: 1rem;">Reduces need to transport materials from Earth. Each kg saved = ~$10,000+ in launch costs.</div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">🛡️</div>
+                <div class="benefit-title">Safety First</div>
+                <div class="benefit-desc" style="color: #aaa; margin-top: 1rem;">No open-air burning, controlled pyrolysis, mandatory microplastic capture, dust isolation protocols.</div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">🤖</div>
+                <div class="benefit-title">Automation</div>
+                <div class="benefit-desc" style="color: #aaa; margin-top: 1rem;">AI-driven robots reduce crew workload by 80%, allowing focus on science and exploration missions.</div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">🔬</div>
+                <div class="benefit-title">Closed-Loop System</div>
+                <div class="benefit-desc" style="color: #aaa; margin-top: 1rem;">Water recycling integrated with ECLSS, minimal consumables, energy-efficient operations during peak power.</div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">📈</div>
+                <div class="benefit-title">Scalable Design</div>
+                <div class="benefit-desc" style="color: #aaa; margin-top: 1rem;">Modular architecture allows expansion from 8-person to 50+ person colonies with minimal redesign.</div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">🎯</div>
+                <div class="benefit-title">On-Demand Manufacturing</div>
+                <div class="benefit-desc" style="color: #aaa; margin-top: 1rem;">3D printing and fabrication produce exactly what's needed when needed—no excess inventory.</div>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon">🌍</div>
+                <div class="benefit-title">Earth Applications</div>
+                <div class="benefit-desc" style="color: #aaa; margin-top: 1rem;">Technology transfers to remote locations, disaster zones, and sustainable communities on Earth.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" style="background: rgba(10,10,30,0.5);">
+        <h2 class="section-title">🔐 Safety & Environmental Protocols</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+            <div style="background: linear-gradient(135deg, rgba(255,50,50,0.1), rgba(255,100,100,0.1)); padding: 2rem; border-radius: 15px; border-left: 5px solid #ff5050;">
+                <h3 style="color: #ff5050; margin-bottom: 1rem;">⚠️ Dust Mitigation</h3>
+                <ul style="color: #ccc; line-height: 1.8;">
+                    <li>Multi-stage seals on all robot hoppers</li>
+                    <li>Electrostatic prefiltering at airlock intake</li>
+                    <li>Cyclonic pre-filters on collection units</li>
+                    <li>Particle traps throughout micro-hub</li>
+                    <li>HEPA filtration for all air handling</li>
+                </ul>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(50,150,255,0.1), rgba(100,180,255,0.1)); padding: 2rem; border-radius: 15px; border-left: 5px solid #5096ff;">
+                <h3 style="color: #5096ff; margin-bottom: 1rem;">💧 Water Management</h3>
+                <ul style="color: #ccc; line-height: 1.8;">
+                    <li>Closed-loop water polishing system</li>
+                    <li>Low-water rinse cycles (minimal consumption)</li>
+                    <li>Solids removal before ECLSS return</li>
+                    <li>Water recycling rate >98%</li>
+                    <li>Integrated with habitat life support</li>
+                </ul>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(255,170,0,0.1), rgba(255,200,50,0.1)); padding: 2rem; border-radius: 15px; border-left: 5px solid #ffaa00;">
+                <h3 style="color: #ffaa00; margin-bottom: 1rem;">🔥 Thermal Processing Safety</h3>
+                <ul style="color: #ccc; line-height: 1.8;">
+                    <li>NO open-air burning permitted</li>
+                    <li>Sealed low-oxygen pyrolysis cells only</li>
+                    <li>Full gas scrubbing systems mandatory</li>
+                    <li>Temperature & atmosphere monitoring</li>
+                    <li>Emergency shutdown protocols</li>
+                </ul>
+            </div>
+
+            <div style="background: linear-gradient(135deg, rgba(150,50,200,0.1), rgba(180,100,220,0.1)); padding: 2rem; border-radius: 15px; border-left: 5px solid #9632c8;">
+                <h3 style="color: #9632c8; margin-bottom: 1rem;">🧬 Contamination Control</h3>
+                <ul style="color: #ccc; line-height: 1.8;">
+                    <li>Microplastic capture mandatory (charged filters)</li>
+                    <li>PFAS containment in hazard vault</li>
+                    <li>Chemical assay at airlock entry</li>
+                    <li>Quarantine tagging for unknowns</li>
+                    <li>Planetary protection compliance</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">⚡ Power & Resource Requirements</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div style="background: rgba(255,107,74,0.1); border: 2px solid rgba(255,107,74,0.3); border-radius: 15px; padding: 2rem;">
+                <div style="font-size: 1.3rem; color: #ff6b4a; margin-bottom: 1rem;">⚡ Power Consumption</div>
+                <div style="color: #ccc; line-height: 1.8;">
+                    <p><strong>Continuous baseline:</strong> 2-3 kW (sorting, AI, monitoring)</p>
+                    <p><strong>Peak operations:</strong> 8-12 kW (extrusion, thermal processing)</p>
+                    <p><strong>Strategy:</strong> Schedule high-draw operations during peak solar/nuclear power windows</p>
+                    <p><strong>Annual consumption:</strong> ~50-60 MWh</p>
+                </div>
+            </div>
+
+            <div style="background: rgba(100,200,255,0.1); border: 2px solid rgba(100,200,255,0.3); border-radius: 15px; padding: 2rem;">
+                <div style="font-size: 1.3rem; color: #64c8ff; margin-bottom: 1rem;">💧 Water Usage</div>
+                <div style="color: #ccc; line-height: 1.8;">
+                    <p><strong>Daily consumption:</strong> 5-8 liters (net)</p>
+                    <p><strong>Recycling rate:</strong> 98%+</p>
+                    <p><strong>Annual net use:</strong> ~2,000 liters</p>
+                    <p><strong>Integration:</strong> Fully integrated with habitat ECLSS</p>
+                </div>
+            </div>
+
+            <div style="background: rgba(255,170,0,0.1); border: 2px solid rgba(255,170,0,0.3); border-radius: 15px; padding: 2rem;">
+                <div style="font-size: 1.3rem; color: #ffaa00; margin-bottom: 1rem;">👥 Crew Time</div>
+                <div style="color: #ccc; line-height: 1.8;">
+                    <p><strong>Weekly maintenance:</strong> 3-5 hours</p>
+                    <p><strong>Manual operations:</strong> 2-3 hours/week</p>
+                    <p><strong>Monitoring:</strong> Mostly automated</p>
+                    <p><strong>Workload reduction:</strong> 80% vs manual sorting</p>
+                </div>
+            </div>
+
+            <div style="background: rgba(150,100,255,0.1); border: 2px solid rgba(150,100,255,0.3); border-radius: 15px; padding: 2rem;">
+                <div style="font-size: 1.3rem; color: #9664ff; margin-bottom: 1rem;">📦 System Mass & Volume</div>
+                <div style="color: #ccc; line-height: 1.8;">
+                    <p><strong>Total system mass:</strong> ~1,200 kg</p>
+                    <p><strong>Micro-hub volume:</strong> 8-10 m³</p>
+                    <p><strong>Robot fleet:</strong> 6-8 units × 15 kg each</p>
+                    <p><strong>ROI timeframe:</strong> 6-8 months of operation</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" style="background: rgba(10,10,30,0.5);">
+        <h2 class="section-title">🚀 Technology Readiness</h2>
+        
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div style="margin-bottom: 3rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="color: #ff6b4a; font-weight: bold;">Robotic Collection Systems</span>
+                    <span style="color: #ffaa00;">TRL 6-7</span>
+                </div>
+                <div style="width: 100%; height: 30px; background: rgba(255,255,255,0.1); border-radius: 15px; overflow: hidden;">
+                    <div style="width: 75%; height: 100%; background: linear-gradient(90deg, #ff6b4a, #ffaa00);"></div>
+                </div>
+                <p style="color: #aaa; margin-top: 0.5rem; font-size: 0.9rem;">Based on ISS robotics and terrestrial autonomous systems</p>
+            </div>
+
+            <div style="margin-bottom: 3rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="color: #ff6b4a; font-weight: bold;">Material Sorting Technology</span>
+                    <span style="color: #ffaa00;">TRL 7-8</span>
+                </div>
+                <div style="width: 100%; height: 30px; background: rgba(255,255,255,0.1); border-radius: 15px; overflow: hidden;">
+                    <div style="width: 85%; height: 100%; background: linear-gradient(90deg, #ff6b4a, #ffaa00);"></div>
+                </div>
+                <p style="color: #aaa; margin-top: 0.5rem; font-size: 0.9rem;">Adapted from terrestrial recycling with space-grade modifications</p>
+            </div>
+
+            <div style="margin-bottom: 3rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="color: #ff6b4a; font-weight: bold;">Polymer Extrusion & AM</span>
+                    <span style="color: #ffaa00;">TRL 6-7</span>
+                </div>
+                <div style="width: 100%; height: 30px; background: rgba(255,255,255,0.1); border-radius: 15px; overflow: hidden;">
+                    <div style="width: 72%; height: 100%; background: linear-gradient(90deg, #ff6b4a, #ffaa00);"></div>
+                </div>
+                <p style="color: #aaa; margin-top: 0.5rem; font-size: 0.9rem;">NASA MSFC polymer recycling demonstration, ISS 3D printing heritage</p>
+            </div>
+
+            <div style="margin-bottom: 3rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="color: #ff6b4a; font-weight: bold;">Metal Recycling Methods</span>
+                    <span style="color: #ffaa00;">TRL 5-6</span>
+                </div>
+                <div style="width: 100%; height: 30px; background: rgba(255,255,255,0.1); border-radius: 15px; overflow: hidden;">
+                    <div style="width: 62%; height: 100%; background: linear-gradient(90deg, #ff6b4a, #ffaa00);"></div>
+                </div>
+                <p style="color: #aaa; margin-top: 0.5rem; font-size: 0.9rem;">Friction-stir welding proven; cold-forming needs microgravity validation</p>
+            </div>
+
+            <div style="margin-bottom: 3rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="color: #ff6b4a; font-weight: bold;">Regolith Composite Pressing</span>
+                    <span style="color: #ffaa00;">TRL 4-5</span>
+                </div>
+                <div style="width: 100%; height: 30px; background: rgba(255,255,255,0.1); border-radius: 15px; overflow: hidden;">
+                    <div style="width: 50%; height: 100%; background: linear-gradient(90deg, #ff6b4a, #ffaa00);"></div>
+                </div>
+                <p style="color: #aaa; margin-top: 0.5rem; font-size: 0.9rem;">Lab demonstrations complete; Mars environmental testing needed</p>
+            </div>
+
+            <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="color: #ff6b4a; font-weight: bold;">Integrated System AI</span>
+                    <span style="color: #ffaa00;">TRL 5-6</span>
+                </div>
+                <div style="width: 100%; height: 30px; background: rgba(255,255,255,0.1); border-radius: 15px; overflow: hidden;">
+                    <div style="width: 60%; height: 100%; background: linear-gradient(90deg, #ff6b4a, #ffaa00);"></div>
+                </div>
+                <p style="color: #aaa; margin-top: 0.5rem; font-size: 0.9rem;">Individual AI components mature; full integration testing in progress</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 3rem; padding: 2rem; background: rgba(255,170,0,0.1); border-radius: 15px; border: 2px solid rgba(255,170,0,0.3);">
+            <h3 style="color: #ffaa00; margin-bottom: 1rem;">📋 Development Roadmap</h3>
+            <div style="color: #ccc; line-height: 2;">
+                <p><strong>Phase 1 (2025-2026):</strong> Terrestrial prototype integration, Mars environmental chamber testing</p>
+                <p><strong>Phase 2 (2027-2028):</strong> Lunar Gateway or ISS demonstration mission</p>
+                <p><strong>Phase 3 (2029-2030):</strong> Mars-specific modifications, robotic precursor mission</p>
+                <p><strong>Phase 4 (2031+):</strong> Full deployment with crewed Mars mission</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">🌟 The Future of Space Sustainability</h2>
+        <p style="max-width: 800px; margin: 0 auto; font-size: 1.2rem; line-height: 1.8; color: #ccc;">
+            WSPN represents a paradigm shift in how we approach long-duration space missions. 
+            By closing the loop on waste, we transform limitations into opportunities, 
+            enabling sustainable human presence beyond Earth.
+        </p>
+        <p style="max-width: 800px; margin: 2rem auto 0; font-size: 1.1rem; line-height: 1.8; color: #aaa;">
+            Every kilogram recycled is a kilogram that doesn't need to be launched. 
+            Every tool printed is one more solution to an unforeseen problem. 
+            Every brick made from waste is one more step toward permanent settlement.
+        </p>
+        <a href="#" class="cta-button">Learn More About WSPN</a>
+    </div>
+
+    <div style="background: rgba(10,10,20,0.9); padding: 3rem 2rem; text-align: center; color: #888;">
+        <p style="margin-bottom: 0.5rem;">WSPN - Waste Segregation & Preprocessing Network</p>
+        <p style="font-size: 0.9rem;">Designed for 8-person, 3-year Mars mission at Jezero Crater</p>
+        <p style="font-size: 0.8rem; margin-top: 1rem;">Based on NASA waste studies, AIAA guidelines, and mission waste composition data</p>
+    </div>
+
+    <script>
+        // Animate recovery bars on scroll
+        const observerOptions = {
+            threshold: 0.5,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.getAttribute('data-width') || entry.target.style.width;
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.recovery-fill').forEach(bar => {
+            const width = bar.style.width;
+            bar.setAttribute('data-width', width);
+            bar.style.width = '0%';
+            observer.observe(bar);
+        });
+
+        // Smooth scroll for CTA button
+        document.querySelector('.cta-button').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
